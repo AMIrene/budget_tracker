@@ -66,7 +66,7 @@ self.addEventListener('fetch', event => {
   }
 
   // handle runtime GET requests for data from /api routes
-  if (event.request.url.includes("/api/images")) {
+  if (event.request.url.includes("/api/")) {
     // make network request and fallback to cache if network request fails (offline)
     event.respondWith(
       caches.open(RUNTIME_CACHE).then(cache => {
@@ -81,21 +81,21 @@ self.addEventListener('fetch', event => {
     return;
   }
 
-// //   // use cache first for all other requests for performance
-// //   event.respondWith(
-// //     caches.match(event.request).then(cachedResponse => {
-// //       if (cachedResponse) {
-// //         return cachedResponse;
-// //       }
+  // use cache first for all other requests for performance
+  event.respondWith(
+    caches.match(event.request).then(cachedResponse => {
+      if (cachedResponse) {
+        return cachedResponse;
+      }
 
-// //       // request is not in cache. make network request and cache the response
-// //       return caches.open(RUNTIME_CACHE).then(cache => {
-// //         return fetch(event.request).then(response => {
-// //           return cache.put(event.request, response.clone()).then(() => {
-// //             return response;
-// //           });
-// //         });
-// //       });
-// //     })
-//   );
+      // request is not in cache. make network request and cache the response
+      return caches.open(RUNTIME_CACHE).then(cache => {
+        return fetch(event.request).then(response => {
+          return cache.put(event.request, response.clone()).then(() => {
+            return response;
+          });
+        });
+      });
+    })
+  );
 });
