@@ -11,23 +11,28 @@ const FILES_TO_CACHE = [
 ];
 
 
-// const STATIC_CACHE = "static-cache-v1";
-// const RUNTIME_CACHE = "runtime-cache";
+const STATIC_CACHE = "static-cache-v1";
+const RUNTIME_CACHE = "runtime-cache";
 
 //install service worker
 
-self.addEventListener('install', evt => {
+self.addEventListener('install', event => {
     // console.log('service worker installed');
-
+    event.waitUntil(
+        caches
+            .open(STATIC_CACHE)
+            .then(cache => cache.addAll(FILES_TO_CACHE))
+            .then(() => self.skipWaiting())
+    );
 });
 
-//service worker activated
+//service worker activated, takes care of cleaning up old caches
 
-self.addEventListener('activate', evt => {
+self.addEventListener('activate', event => {
     // console.log('service worker activated');
 });
 
 // fetch event
-self.addEventListener('fetch', evt => {
+self.addEventListener('fetch', event => {
     // console.log('fetch event', evt);
 });
