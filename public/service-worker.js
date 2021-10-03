@@ -17,17 +17,17 @@ const FILES_TO_CACHE = [
 //install service worker
 
 self.addEventListener('install', evt => {
-    console.log('service worker installed');
+    // console.log('service worker installed');
 
 });
 
 //service worker activated
 
 self.addEventListener('activate', evt => {
-    console.log('service worker activated');
+    // console.log('service worker activated');
 });
 
 // fetch event
 self.addEventListener('fetch', evt => {
-    console.log('fetch event', evt);
+    // console.log('fetch event', evt);
 });
